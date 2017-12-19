@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'MovieController@popular');
+
+Route::get('/movies', 'MovieController@index');
