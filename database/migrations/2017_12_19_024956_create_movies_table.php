@@ -19,7 +19,7 @@ class CreateMoviesTable extends Migration
             $table->string('title');
             $table->string('format');
             $table->integer('length');
-            $table->year('release_year');
+            $table->char('release_year', 4);
             $table->char('rating', 1);
             $table->timestamps();
         });
