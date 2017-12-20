@@ -2,6 +2,9 @@
 @section('title')
  {{ $page_title }}
 @stop
+@section('js_includes')
+    <script src="/js/footable.js"></script>
+@stop
 @section('content')
 <div class="form-inline">
     <div class="pull-right">
@@ -43,23 +46,4 @@
         </tbody>
     </table>
 </div>
-
-    <script type="text/javascript">
-        $('table#movies').footable();
-
-        $('.js-clear-filter').click(function (e) {
-          e.preventDefault();
-          var table = $(this).attr('data-table');
-
-          $(table).trigger('footable_clear_filter');
-        });
-
-        $('.js-change-page-size').on('change', function(e) {
-            e.preventDefault();
-            var pageSize = $(this).val() || 10;
-            var table = $(this).attr('data-table');
-
-            $(table).data('page-size', pageSize).trigger('footable_redraw');
-        });
-    </script>
 @stop

@@ -21,5 +21,6 @@
     </footer>
 
 </div>
+    @yield('js_includes')
 </body>
 </html>
