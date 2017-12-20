@@ -13,6 +13,8 @@ class MovieController extends Controller {
 
         $movies = MovieModel::all();
 
+        // @todo add order by name
+
         return view('pages.movies', [ 'movies' => $movies ]);
 
     }
