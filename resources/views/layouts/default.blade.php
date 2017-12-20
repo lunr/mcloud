@@ -6,17 +6,17 @@
 <body>
 <div class="container-fluid">
 
-    <header>
+    <header class="row">
         @include('includes.header')
     </header>
 
-    <div id="main">
+    <div id="main" class="row">
 
             @yield('content')
 
     </div>
 
-    <footer>
+    <footer class="row">
         @include('includes.footer')
     </footer>
 
