@@ -1,4 +1,7 @@
 @extends('layouts.default')
+@section('title')
+ {{ $page_title }}
+@stop
 @section('content')
 <div class="form-inline">
     <div class="pull-right">

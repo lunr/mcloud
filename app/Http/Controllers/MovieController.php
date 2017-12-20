@@ -15,7 +15,7 @@ class MovieController extends Controller {
 
         // @todo add order by name
 
-        return view('pages.movies', [ 'movies' => $movies ]);
+        return view('pages.movies', [ 'movies' => $movies, 'page_title' => 'My Movies' ]);
 
     }
 
