@@ -14,7 +14,7 @@
                 <dt>Release Year</dt><dd>@{{ movie.release_year }}</dd>
                 <dt>Rating</dt><dd>@{{ movie.rating }}</dd>
             </dl>
-            <p><button class="btn btn-primary btn-sm" v-on:click="enableEditMode">Edit</button></p>
+            <p><button class="btn btn-primary btn-sm" v-on:click="enableEditMode"><span class="glyphicon glyphicon-edit"></span> Edit</button></p>
             <br/>
             <a href="/movies"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back to my movies</a>
         </div>
@@ -55,8 +55,8 @@
                     <?php endfor; ?>
                     <span v-if="formErrors.rating" class="text-danger">@{{ formErrors.rating[0] }}</span>
                 </div>
-                <button type="submit" class="btn btn-primary">Save</button>
-                <button type="button" class="btn btn-default" v-on:click="cancelEditMode">Cancel</button>
+                <button type="submit" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-ok-circle"></span> Save</button>
+                <button type="button" class="btn btn-default btn-sm" v-on:click="cancelEditMode"><span class="glyphicon glyphicon-remove-circle"></span> Cancel</button>
             </form>
         </div>
     </template>
@@ -65,10 +65,10 @@
         var MovieManager = new Vue({
             el: '#main',
             data: {
-                editMode: false,
+                editMode: {!! (!$movie->id ? 'true' : 'false') !!},
                 formats: [ 'VHS', 'DVD', 'Streaming' ],
                 formErrors: {},
-                movie: {!! json_encode($movie->toArray()) !!}
+                movie: {!! json_encode($movie_data) !!}
             },
             computed: {
                 "movie_length_human": function() {
@@ -101,12 +101,19 @@
                     var controller = this;
                     var movie = controller.movie;
 
+                    var newMovie = (typeof movie.id == 'undefined') ? true : false;
+
                     controller.formErrors = {};
 
                     axios.post('/api/movies/update', movie)
                         .then(function (resp) {
                             controller.movie = resp.data;
                             controller.editMode = false;
+
+                            if(newMovie) {
+                                window.history.pushState('Movie', controller.movie.title, '/movie/' + controller.movie.id);
+                                document.title = document.title.split('-')[0] + ' - ' + controller.movie.title;
+                            }
                         })
                         .catch(function (error) {
                             if (error.response) {

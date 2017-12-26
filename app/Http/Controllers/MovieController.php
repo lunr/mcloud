@@ -24,6 +24,14 @@ class MovieController extends Controller {
         return view('pages.popular');
     }
 
+    public function create() {
+        $movie = new MovieModel;
+        $page_title = 'Create';
+        $movie_data = array_fill_keys($movie->getFillable(), '');
+
+        return view('movie', compact('movie', 'movie_data', 'page_title'));
+    }
+
     public function update(Request $request) {
         $this->validate($request, [
             'title' => 'required|string|min:1|max:50',
@@ -37,11 +45,10 @@ class MovieController extends Controller {
 
         if($movieId) {
             $movie = MovieModel::find($movieId);
+            $result = $movie->update($request->all());
         } else {
-            $movie = new MovieModel();
+            $result = $movie = MovieModel::create($request->all());
         }
-
-        $result = $movie->update($request->all());
 
         if($result) {
             return response()->json($movie, 200);
