@@ -12,7 +12,7 @@ class MovieController extends Controller {
 
     public function index() {
 
-        $movies = MovieModel::orderBy('title', 'desc')->get();
+        $movies = MovieModel::orderBy('title', 'asc')->get();
 
         return view('pages.movies', [ 'movies' => $movies, 'page_title' => 'My Movies' ]);
 
