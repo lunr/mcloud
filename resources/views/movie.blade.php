@@ -73,7 +73,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <a href="<?=route('deleteMovie', ['id' => $movie->id]);?>" class="btn btn-danger">Delete</a>
+                    <a href="<?=route('deleteMovie', [ 'id' => $movie->id]);?>" id="deleteMovieButton" class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>
@@ -131,6 +131,8 @@
                             if(newMovie) {
                                 window.history.pushState('Movie', controller.movie.title, '/movie/' + controller.movie.id);
                                 document.title = document.title.split('-')[0] + ' - ' + controller.movie.title;
+                                var deleteButtonHref = $('#deleteMovieButton').attr('href');
+                                $('#deleteMovieButton').attr('href', deleteButtonHref + '/' + controller.movie.id);
                             }
                         })
                         .catch(function (error) {
