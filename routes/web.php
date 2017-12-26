@@ -13,4 +13,11 @@
 
 Route::get('/', 'MovieController@popular');
 
-Route::get('/movies', 'MovieController@index');
+Route::post('/api/movies/update', 'MovieController@update');
+
+Route::get('/movies', 'MovieController@index')->name('movies');
+
+Route::get('movie/{movie}', function (App\Movie $movie) {
+    $page_title = $movie->title;
+    return view('movie', compact('movie', 'page_title'));
+})->name('movie');
