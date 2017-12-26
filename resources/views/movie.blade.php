@@ -56,10 +56,28 @@
                     <span v-if="formErrors.rating" class="text-danger">@{{ formErrors.rating[0] }}</span>
                 </div>
                 <button type="submit" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-ok-circle"></span> Save</button>
+                <a class="btn btn-danger btn-sm" v-if="movie.id" href="#confirm-delete" role="button" data-toggle="modal"><span class="glyphicon glyphicon-remove"></span> Delete</a>
                 <button type="button" class="btn btn-default btn-sm" v-on:click="cancelEditMode"><span class="glyphicon glyphicon-remove-circle"></span> Cancel</button>
             </form>
         </div>
     </template>
+
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Delete Movie
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete @{{ movie.title }}?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a href="<?=route('deleteMovie', ['id' => $movie->id]);?>" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script type="text/javascript">
         var MovieManager = new Vue({
@@ -122,7 +140,6 @@
                               alert('Could not update the movie');
                             }
                         });
-
                 }
             }
         });

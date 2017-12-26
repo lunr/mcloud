@@ -12,9 +12,7 @@ class MovieController extends Controller {
 
     public function index() {
 
-        $movies = MovieModel::all();
-
-        // @todo add order by name
+        $movies = MovieModel::orderBy('title', 'desc')->get();
 
         return view('pages.movies', [ 'movies' => $movies, 'page_title' => 'My Movies' ]);
 
@@ -56,5 +54,14 @@ class MovieController extends Controller {
             return response()->json([ 'error' => 'Unable to update movie data' ], 500);
         }
 
+    }
+
+    public function delete($id) {
+        MovieModel::find($id)->delete();
+
+        \Session::flash('flash_message', 'Movie was deleted successfully');
+    	\Session::flash('flash_type', 'alert-info');
+
+        return redirect()->route('movies');
     }
 }

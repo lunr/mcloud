@@ -7,6 +7,9 @@
 @stop
 @section('content')
 <div class="form-inline">
+    <div class="pull-left">
+        <a class="btn btn-primary btn-sm" href="/movie/create"><span class="glyphicon glyphicon-plus"></span> Add Movie</a>
+    </div>
     <div class="pull-right">
         <select id="page-size" class="js-change-page-size form-control" name="change-page-size">
             <option selected="selected">

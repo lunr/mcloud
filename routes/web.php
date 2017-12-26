@@ -13,11 +13,11 @@
 
 Route::get('/', 'MovieController@popular');
 
-Route::post('/api/movies/update', 'MovieController@update');
-
 Route::get('/movies', 'MovieController@index')->name('movies');
 
 Route::get('/movie/create', 'MovieController@create');
+Route::post('/api/movies/update', 'MovieController@update');
+Route::get('/movie/delete/{id}', 'MovieController@delete')->name('deleteMovie');
 
 Route::get('movie/{movie}', function (App\Movie $movie) {
     $page_title = $movie->title;

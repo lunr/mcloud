@@ -11,8 +11,16 @@
     </header>
 
     <div id="main" class="row">
+        @if ( Session::has('flash_message') )
 
-            @yield('content')
+          <div class="alert alert-dismissible {{ Session::get('flash_type') }}">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              {{ Session::get('flash_message') }}
+          </div>
+
+        @endif
+
+        @yield('content')
 
     </div>
 
