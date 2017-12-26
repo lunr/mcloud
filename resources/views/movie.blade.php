@@ -5,7 +5,7 @@
 @section('content')
     <router-view></router-view>
 
-    <template id="movie">
+    <template id="movie" v-if="!editMode">
         <div>
             <h2>@{{ movie.title }}</h2>
             <dl>
@@ -14,13 +14,13 @@
                 <dt>Release Year</dt><dd>@{{ movie.release_year }}</dd>
                 <dt>Rating</dt><dd>@{{ movie.rating }}</dd>
             </dl>
-            <p><button class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i> Edit</button></p>
+            <p><button class="btn btn-primary btn-sm" v-on:click="enableEditMode">Edit</button></p>
             <br/>
             <a href="/movies"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back to my movies</a>
         </div>
     </template>
 
-    <template id="movie-edit">
+    <template id="movie-edit" v-if="editMode">
         <div>
             <h2>Edit movie</h2>
             <form v-on:submit="updateMovie">
@@ -56,7 +56,7 @@
                     <span v-if="formErrors.rating" class="text-danger">@{{ formErrors.rating[0] }}</span>
                 </div>
                 <button type="submit" class="btn btn-primary">Save</button>
-                <router-link class="btn btn-default" v-bind:to="'/'">Cancel</router-link>
+                <button type="button" class="btn btn-default" v-on:click="cancelEditMode">Cancel</button>
             </form>
         </div>
     </template>
@@ -65,6 +65,7 @@
         var MovieManager = new Vue({
             el: '#main',
             data: {
+                editMode: false,
                 formats: [ 'VHS', 'DVD', 'Streaming' ],
                 formErrors: {},
                 movie: {!! json_encode($movie->toArray()) !!}
@@ -88,6 +89,12 @@
                 }
             },
             methods: {
+                enableEditMode: function() {
+                    this.editMode = true;
+                },
+                cancelEditMode: function() {
+                    this.editMode = false;
+                },
                 updateMovie(e) {
                     e.preventDefault();
 
@@ -99,6 +106,7 @@
                     axios.post('/api/movies/update', movie)
                         .then(function (resp) {
                             controller.movie = resp.data;
+                            controller.editMode = false;
                         })
                         .catch(function (error) {
                             if (error.response) {
