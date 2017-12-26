@@ -36,7 +36,7 @@
         <tbody>
         <?php foreach($movies as $movie) : ?>
             <tr>
-                <td><?=$movie->title?></td>
+                <td><a href="<?=route('movie', ['movie' => $movie]);?>"><?=$movie->title?></a></td>
                 <td><?=$movie->format?></td>
                 <td><?=$movie->length?></td>
                 <td><?=$movie->release_year?></td>
