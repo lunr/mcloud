@@ -37,15 +37,19 @@
             <th>Rating</th>
         </thead>
         <tbody>
-        <?php foreach($movies as $movie) : ?>
-            <tr>
-                <td><a href="<?=route('movie', ['movie' => $movie]);?>"><?=$movie->title?></a></td>
-                <td><?=$movie->format?></td>
-                <td><?=$movie->length?></td>
-                <td><?=$movie->release_year?></td>
-                <td><?=$movie->rating?></td>
-            </tr>
-        <?php endforeach; ?>
+        <?php if($movies->count()) : ?>
+            <?php foreach($movies as $movie) : ?>
+                <tr>
+                    <td><a href="<?=route('movie', ['movie' => $movie]);?>"><?=$movie->title?></a></td>
+                    <td><?=$movie->format?></td>
+                    <td data-sort-value="<?=$movie->length?>"><?=$movie->get_runtime()?></td>
+                    <td><?=$movie->release_year?></td>
+                    <td><?=$movie->rating?></td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else : ?>
+            <tr><td colspan="5"><div style="text-align:center">No movies found</div></td></tr>
+        <?php endif; ?>
         </tbody>
     </table>
 </div>
