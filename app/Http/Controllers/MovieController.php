@@ -7,6 +7,7 @@ use App\Movie as MovieModel;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 
 class MovieController extends Controller {
@@ -17,15 +18,14 @@ class MovieController extends Controller {
     }
 
     public function index() {
-
-        $movies = MovieModel::orderBy('title', 'asc')->get();
+        $movies = auth()->user()->movies()->orderBy('title', 'asc')->get();
 
         return view('pages.movies', [ 'movies' => $movies, 'page_title' => 'My Movies' ]);
 
     }
 
     public function popular() {
-        $my_movies = MovieModel::all()->pluck('title')->toArray();
+        $my_movies = auth()->user()->movies()->pluck('title')->toArray();
 
         $popular_movies_cache_key = 'tmdb_popular_movies';
         $popular_movies_cache_expiry_min = 60;
@@ -98,7 +98,7 @@ class MovieController extends Controller {
             $movie = MovieModel::find($movieId);
             $result = $movie->update($request->all());
         } else {
-            $result = $movie = MovieModel::create($request->all());
+            $result = $movie = auth()->user()->movies()->create($request->all());
         }
 
         if($result) {
@@ -159,7 +159,7 @@ class MovieController extends Controller {
                 'rating' => round($tmdb_movie->vote_average / 2)
             ];
 
-            $movie = MovieModel::create($movieData);
+            $movie = auth()->user()->movies()->create($movieData);
             return response()->json($movie, 200);
         }
 
