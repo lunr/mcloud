@@ -21,3 +21,27 @@ window.Vue = require('vue');
 // const app = new Vue({
 //     el: '#app'
 // });
+
+$(document).ready(function() {
+    $('body').on('click', '.js-add-movie', function(e) {
+        e.preventDefault();
+
+        var btn = $(this);
+        var added_btn = $(this).siblings('.js-added-movie');
+        var endpoint = $(this).attr('href');
+
+        $.ajax(endpoint, {
+            contentType: 'application/json',
+            method: 'GET',
+            success: function(response) {
+                $(btn).fadeOut('fast', function() {
+                    $(added_btn).fadeIn('fast');
+                    $(btn).remove();
+                });
+            },
+            error: function(resp) {
+                alert('Error adding movie to your collection!');
+            }
+        });
+    });
+});

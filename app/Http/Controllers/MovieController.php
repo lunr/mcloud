@@ -20,6 +20,8 @@ class MovieController extends Controller {
     }
 
     public function popular() {
+        $my_movies = MovieModel::all()->pluck('title')->toArray();
+
         $popular_movies_cache_key = 'tmdb_popular_movies';
         $popular_movies_cache_expiry_min = 60;
         $error = false;
@@ -63,7 +65,9 @@ class MovieController extends Controller {
             $movies = json_decode($movies);
         }
 
-        return view('pages.popular', compact('movies', 'error', 'image_url_prefix'));
+        $page_title = 'Popular Movies';
+
+        return view('pages.popular', compact('page_title', 'movies', 'my_movies', 'error', 'image_url_prefix'));
     }
 
     public function create() {
@@ -107,5 +111,52 @@ class MovieController extends Controller {
     	\Session::flash('flash_type', 'alert-info');
 
         return redirect()->route('movies');
+    }
+
+    public function add(Request $request) {
+        $source = false;
+        $id = false;
+
+        if(!$request->source || !$request->id) {
+            return response()->json([ 'error' => 'Source or movie ID must be valid'], 400);
+        }
+
+        $tmdb_config = config('app.tmdb');
+
+        $params = [ 'language' => $tmdb_config['language'], 'api_key' => $tmdb_config['api_key'] ];
+        $endpoint = sprintf('%s/%s?%s', $tmdb_config['api'], $request->id, http_build_query($params));
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $endpoint,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_TIMEOUT => 30000,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET"
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+
+        if ($err) {
+            return response()->json([ 'error' => 'Movie not found'], 404);
+        } else {
+            $tmdb_movie = json_decode($response);
+
+            $movieData = [
+                'title' => $tmdb_movie->title,
+                'format' => 'Streaming',
+                'length' => $tmdb_movie->runtime,
+                'release_year' => date('Y', strtotime($tmdb_movie->release_date)),
+                'rating' => round($tmdb_movie->vote_average / 2)
+            ];
+
+            $movie = MovieModel::create($movieData);
+            return response()->json($movie, 200);
+        }
+
     }
 }

@@ -17,6 +17,7 @@ Route::get('/movies', 'MovieController@index')->name('movies');
 
 Route::get('/movie/create', 'MovieController@create');
 Route::post('/api/movies/update', 'MovieController@update');
+Route::get('/api/movies/add', 'MovieController@add');
 Route::get('/movie/delete/{id}', 'MovieController@delete')->name('deleteMovie');
 
 Route::get('movie/{movie}', function (App\Movie $movie) {
