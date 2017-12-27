@@ -9,6 +9,11 @@
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "node_modules/footable/css/footable.core";
 
+.nav.navbar-nav li {
+    float:left
+}
+
+
 #main {
     padding: 0px 20px 20px 20px;
 }
