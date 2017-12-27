@@ -54,6 +54,17 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     /*
+     * The Movie Database API Configuration
+     *
+    */
+    'tmdb' => [
+        'api' => 'https://api.themoviedb.org/3/movie',
+        'api_key' => env('TMDB_API_KEY', ''),
+        'image_url_prefix' => 'https://image.tmdb.org/t/p/w300_and_h450_bestv2/',
+        'language' => 'en-US'
+    ],
+
+    /*
     |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
