@@ -11,6 +11,11 @@ use App\Http\Controllers\Controller;
 
 class MovieController extends Controller {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index() {
 
         $movies = MovieModel::orderBy('title', 'asc')->get();

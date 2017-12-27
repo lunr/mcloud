@@ -25,3 +25,8 @@ Route::get('movie/{movie}', function (App\Movie $movie) {
     $movie_data = $movie->toArray();
     return view('movie', compact('movie', 'movie_data', 'page_title'));
 })->name('movie');
+
+Auth::routes();
+
+Route::get('login/github', 'Auth\LoginController@redirectToProvider');
+Route::get('login/github/callback', 'Auth\LoginController@handleProviderCallback');
