@@ -12,3 +12,21 @@
 #main {
     padding: 0px 20px 20px 20px;
 }
+
+.text-underline {
+    text-decoration: underline;
+}
+
+div.imagetiles {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+div.imagetiles div.col-lg-3.col-md-3.col-sm-3.col-xs-6{
+  padding: 0px;
+}
+
+div.popular-banner {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
