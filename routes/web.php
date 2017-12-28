@@ -21,6 +21,13 @@ Route::get('/api/movies/add', 'MovieController@add');
 Route::get('/movie/delete/{id}', 'MovieController@delete')->name('deleteMovie');
 
 Route::get('movie/{movie}', function (App\Movie $movie) {
+
+    if (Gate::denies('update-movie', $movie)) {
+        \Session::flash('flash_message', 'You do not have permission to view this movie.');
+        \Session::flash('flash_type', 'alert-warning');
+        return redirect()->route('movies');
+    }
+
     $page_title = $movie->title;
     $movie_data = $movie->toArray();
     return view('movie', compact('movie', 'movie_data', 'page_title'));

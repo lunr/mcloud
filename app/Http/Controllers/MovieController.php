@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Gate;
+
 use App\User;
 use App\Movie as MovieModel;
 use Illuminate\View\View;
@@ -96,6 +98,11 @@ class MovieController extends Controller {
 
         if($movieId) {
             $movie = MovieModel::find($movieId);
+
+            if (Gate::denies('update-movie', $movie)) {
+                abort(403);
+            }
+
             $result = $movie->update($request->all());
         } else {
             $result = $movie = auth()->user()->movies()->create($request->all());
@@ -110,7 +117,15 @@ class MovieController extends Controller {
     }
 
     public function delete($id) {
-        MovieModel::find($id)->delete();
+        $movie = MovieModel::find($id);
+
+        if (Gate::denies('update-movie', $movie)) {
+            \Session::flash('flash_message', 'You do not have permission to delete this movie.');
+            \Session::flash('flash_type', 'alert-warning');
+            return redirect()->route('movies');
+        }
+
+        $movie->delete();
 
         \Session::flash('flash_message', 'Movie was deleted successfully');
     	\Session::flash('flash_type', 'alert-info');
