@@ -108,9 +108,11 @@
             },
             methods: {
                 enableEditMode: function() {
+                    this.orig_movie = JSON.parse(JSON.stringify(this.movie));;
                     this.editMode = true;
                 },
                 cancelEditMode: function() {
+                    this.movie = JSON.parse(JSON.stringify(this.orig_movie));
                     this.editMode = false;
                 },
                 updateMovie(e) {
