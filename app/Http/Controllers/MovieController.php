@@ -89,8 +89,8 @@ class MovieController extends Controller {
         $this->validate($request, [
             'title' => 'required|string|min:1|max:50',
             'format' => 'required',
-            'length' => 'required|integer|min:1|max:500',
-            'release_year' => 'required|integer|min:1800|max:2100',
+            'length' => 'required|integer|min:1|max:499',
+            'release_year' => 'required|integer|min:1801|max:2099',
             'rating' => 'nullable|integer|min:1|max:5'
         ]);
 
