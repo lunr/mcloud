@@ -27,6 +27,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /*
+     * Movie Relationship declaration
+    */
     public function movies()
     {
         return $this->hasMany('App\Movie');

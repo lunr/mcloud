@@ -19,6 +19,9 @@ class MovieController extends Controller {
         $this->middleware('auth');
     }
 
+    /*
+     * Index method handles listing a user's movies in a table view
+    */
     public function index() {
         $movies = auth()->user()->movies()->orderBy('title', 'asc')->get();
 
@@ -26,6 +29,10 @@ class MovieController extends Controller {
 
     }
 
+    /*
+     * Home page of the site. Displays a grid view of popular movies
+     * from The Movie DB's API
+    */
     public function popular() {
         $my_movies = auth()->user()->movies()->pluck('title')->toArray();
 
@@ -77,6 +84,9 @@ class MovieController extends Controller {
         return view('pages.popular', compact('page_title', 'movies', 'my_movies', 'error', 'image_url_prefix'));
     }
 
+    /*
+     * Controller route to display a form to create a new movie
+    */
     public function create() {
         $movie = new MovieModel;
         $page_title = 'Create';
@@ -85,6 +95,12 @@ class MovieController extends Controller {
         return view('movie', compact('movie', 'movie_data', 'page_title'));
     }
 
+    /*
+     * API Route that handles the POST request when creating or updating
+     * a movie object.
+     *
+     * Validates permission based on movie's user_id value
+    */
     public function update(Request $request) {
         $this->validate($request, [
             'title' => 'required|string|min:1|max:50',
@@ -116,6 +132,12 @@ class MovieController extends Controller {
 
     }
 
+    /*
+     * Controller route to delete a movie object
+     *
+     * Validates permission baseed on the movie's user_id
+     * Redirects the user bcak to the `index` method (list) of their movies
+    */
     public function delete($id) {
         $movie = MovieModel::find($id);
 
@@ -133,6 +155,13 @@ class MovieController extends Controller {
         return redirect()->route('movies');
     }
 
+    /*
+     * API Route to add a movie to a user's collection using the
+     * Movie DB's API to fetch the movie's details and auto-fill
+     * in the movie information.
+     *
+     * Returns the movie data on success
+    */
     public function add(Request $request) {
         $source = false;
         $id = false;
